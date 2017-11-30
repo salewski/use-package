@@ -1,0 +1,249 @@
+#+TITLE: use-package User Manual
+#+AUTHOR: John Wiegley
+#+EMAIL: johnw@newartisans.com
+#+DATE: 2012-2017
+#+LANGUAGE: en
+
+#+TEXINFO_DIR_CATEGORY: Emacs
+#+TEXINFO_DIR_TITLE: use-package: (use-package).
+#+TEXINFO_DIR_DESC: Declarative package configuration for Emacs.
+#+SUBTITLE: for version 2.4
+
+#+TEXINFO_DEFFN: t
+#+OPTIONS: H:4 num:3 toc:2
+
+use-package is...
+
+#+BEGIN_QUOTE
+Copyright (C) 2012-2017 John Wiegley <johnw@newartisans.com>
+
+You can redistribute this document and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version.
+
+This document is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#+END_QUOTE
+
+* Introduction
+
+TODO
+
+* Installation
+** _ :ignore:
+
+use-package can be installed using Emacs' package manager or manually from
+its development repository.
+
+** Installing from an Elpa Archive
+
+use-package is available from Melpa and Melpa-Stable. If you haven't used
+Emacs' package manager before, then it is high time you familiarize yourself
+with it by reading the documentation in the Emacs manual, see
+[[info:emacs#Packages]]. Then add one of the archives to ~package-archives~:
+
+- To use Melpa:
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+#+END_SRC
+
+- To use Melpa-Stable:
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+#+END_SRC
+
+Once you have added your preferred archive, you need to update the
+local package list using:
+
+#+BEGIN_EXAMPLE
+  M-x package-refresh-contents RET
+#+END_EXAMPLE
+
+Once you have done that, you can install use-package and its dependencies
+using:
+
+#+BEGIN_EXAMPLE
+  M-x package-install RET use-package RET
+#+END_EXAMPLE
+
+Now see [[*Post-Installation Tasks]].
+
+** Installing from the Git Repository
+
+First, use Git to clone the use-package repository:
+
+#+BEGIN_SRC shell-script
+  $ git clone https://github.com/jwiegley/use-package.git ~/.emacs.d/site-lisp/use-package
+  $ cd ~/.emacs.d/site-lisp/use-package
+#+END_SRC
+
+Then compile the libraries and generate the info manuals:
+
+#+BEGIN_SRC shell-script
+  $ make
+#+END_SRC
+
+You may need to create ~/path/to/use-package/config.mk~ with the following
+content before running ~make~:
+
+#+BEGIN_SRC makefile
+  LOAD_PATH  = -L /path/to/use-package
+#+END_SRC
+
+Finally add this to your init file:
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/use-package")
+  (require 'use-package)
+
+  (with-eval-after-load 'info
+    (info-initialize)
+    (add-to-list 'Info-directory-list
+                 "~/.emacs.d/site-lisp/use-package/"))
+#+END_SRC
+
+Note that elements of ~load-path~ should not end with a slash, while those of
+~Info-directory-list~ should.
+
+Instead of running use-package directly from the repository by adding it to
+the ~load-path~, you might want to instead install it in some other directory
+using ~sudo make install~ and setting ~load-path~ accordingly.
+
+To update use-package use:
+
+#+BEGIN_SRC shell-script
+  $ git pull
+  $ make
+#+END_SRC
+
+At times it might be necessary to run ~make clean all~ instead.
+
+To view all available targets use ~make help~.
+
+Now see [[*Post-Installation Tasks]].
+
+** Post-Installation Tasks
+
+After installing use-package you should verify that you are indeed using the
+use-package release you think you are using. It's best to restart Emacs before
+doing so, to make sure you are not using an outdated value for ~load-path~.
+
+#+BEGIN_EXAMPLE
+  C-h v use-package-version RET
+#+END_EXAMPLE
+
+should display something like
+
+#+BEGIN_EXAMPLE
+  use-package-version’s value is "2.4"
+#+END_EXAMPLE
+
+If you are completely new to use-package then see [[*Getting Started]].
+
+If you run into problems, then please see the [[*FAQ]].  Also see the
+[[*Debugging Tools]].
+
+* Getting Started
+
+TODO. For now, see ~README.md~.
+
+* FAQ
+:PROPERTIES:
+:APPENDIX:   t
+:END:
+
+The next two nodes lists frequently asked questions.
+
+Please also use the [[*Debugging Tools]].
+
+** FAQ - How to ...?
+*** TODO
+
+TODO
+
+*** TODO
+
+TODO
+
+** FAQ - Issues and Errors
+*** TODO
+
+TODO
+
+* Debugging Tools
+
+TODO
+
+Please also see the [[*FAQ]].
+
+* Command Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      cp
+:END:
+* Function Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      fn
+:END:
+* Variable Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      vr
+:END:
+
+* _ Copying
+:PROPERTIES:
+:COPYING:    t
+:END:
+
+#+BEGIN_QUOTE
+Copyright (C) 2012-2017 John Wiegley <johnw@newartisans.com>
+
+You can redistribute this document and/or modify it under the terms
+of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This document is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+#+END_QUOTE
+
+* _ :ignore:
+
+#  LocalWords:  ARG ARGS CONDITIONs ChangeLog DNS Dired Ediff Ediffing
+#  LocalWords:  Elpa Emacsclient FUNC Flyspell Git Git's Gitk HOOK's
+#  LocalWords:  IDENT Ido Junio LocalWords
+#  LocalWords:  Melpa Propertize REF REF's RET Reflog SPC SYM Spacemacs
+#  LocalWords:  Submodules TODO TYPEs Theming Unpulled Unpushed Unstaged
+#  LocalWords:  Untracked WORKTREE Wip ack args async autoloads autosaving
+#  LocalWords:  autosquash backport basename branchref builtin
+#  LocalWords:  cdr changelog committer config customizable diff's diffstat
+#  LocalWords:  dwim ediff ediffing editmsg emacsclient filename fixup
+#  LocalWords:  flyspell func git's gitk gitman gitmodule gitmodules goto
+#  LocalWords:  gpg gui ident ido init inserter inserters keymap keymaps
+#  LocalWords:  logfile use-package maildir manpage manpages minibuffer multi mv
+#  LocalWords:  namespace newbase nocommit notesRef popup popups posix prev
+#  LocalWords:  propertize rebase rebased rebasing reflog repo signoff str
+#  LocalWords:  struct subcommand submodule submodule's submodules subprocess
+#  LocalWords:  sym texinfo theming todo topdir un unhighlighted unpulled
+#  LocalWords:  unpushed unstage unstaged unstages unstaging untracked url
+#  LocalWords:  versa whitespace wip workflow worktree wtree
+#  LocalWords:  backported macOS
+
+# Local Variables:
+# eval: (require 'org-man     nil t)
+# eval: (require 'ox-texinfo+ nil t)
+# eval: (and (require 'ox-extra nil t) (ox-extras-activate '(ignore-headlines)))
+# indent-tabs-mode: nil
+# org-src-preserve-indentation: nil
+# End:
