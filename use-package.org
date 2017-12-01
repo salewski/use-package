@@ -661,6 +661,36 @@ In another example, we can load things conditional on the operating system:
 Note that ~:when~ is provided as an alias for ~:if~, and ~:unless foo~ means
 the same thing as ~:if (not foo)~.
 
+** ~:load-path~
+
+If your package needs a directory added to the ~load-path~ in order to load,
+use ~:load-path~. This takes a symbol, a function, a string or a list of
+strings. If the path is relative, it is expanded within
+~user-emacs-directory~:
+
+#+BEGIN_SRC emacs-lisp
+(use-package ess-site
+  :load-path "site-lisp/ess/lisp/"
+  :commands R)
+#+END_SRC
+
+Note that when using a symbol or a function to provide a dynamically generated
+list of paths, you must inform the byte-compiler of this definition so the
+value is available at byte-compilation time. This is done by using the special
+form ~eval-and-compile~ (as opposed to ~eval-when-compile~). Further, this
+value is fixed at whatever was determined during compilation, to avoid looking
+up the same information again on each startup:
+
+#+BEGIN_SRC emacs-lisp
+(eval-and-compile
+  (defun ess-site-load-path ()
+    (shell-command "find ~ -path ess/lisp")))
+
+(use-package ess-site
+  :load-path (lambda () (list (ess-site-load-path)))
+  :commands R)
+#+END_SRC
+
 ** ~:mode~, ~:interpreter~
 
 Similar to ~:bind~, you can use ~:mode~ and ~:interpreter~ to establish a
@@ -699,38 +729,25 @@ This does exactly the same thing as the following:
   :bind ("C-." . ace-jump-mode))
 #+END_SRC
 
-** ~:load-path~
+** ~:magic~, ~:magic-fallback~
 
-If your package needs a directory added to the ~load-path~ in order to load,
-use ~:load-path~. This takes a symbol, a function, a string or a list of
-strings. If the path is relative, it is expanded within
-~user-emacs-directory~:
+Similar to `:mode` and `:interpreter`, you can also use `:magic` and
+`:magic-fallback` to cause certain function to be run if the beginning of a
+file matches a given regular expression. The difference between the two is
+that `:magic-fallback` has a lower priority than `:mode`. For example:
 
-#+BEGIN_SRC emacs-lisp
-(use-package ess-site
-  :load-path "site-lisp/ess/lisp/"
-  :commands R)
-#+END_SRC
+``` elisp
+(use-package pdf-tools
+  :load-path "site-lisp/pdf-tools/lisp"
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
+```
 
-Note that when using a symbol or a function to provide a dynamically generated
-list of paths, you must inform the byte-compiler of this definition so the
-value is available at byte-compilation time. This is done by using the special
-form ~eval-and-compile~ (as opposed to ~eval-when-compile~). Further, this
-value is fixed at whatever was determined during compilation, to avoid looking
-up the same information again on each startup:
+This registers an autoloaded command for `pdf-view-mode`, defers loading of
+`pdf-tools`, and runs `pdf-view-mode` if the beginning of a buffer matches the
+string `"%PDF"`.
 
-#+BEGIN_SRC emacs-lisp
-(eval-and-compile
-  (defun ess-site-load-path ()
-    (shell-command "find ~ -path ess/lisp")))
-
-(use-package ess-site
-  :load-path (lambda () (list (ess-site-load-path)))
-  :commands R)
-#+END_SRC
-
-** ~:magic-fallback~
-** ~:magic~
 ** ~:no-require~
 
 Normally, ~use-package~ will load each package at compile time before
