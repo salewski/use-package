@@ -80,6 +80,6 @@ LOAD_PATH = -L $(TOP)
 endif # ifndef LOAD_PATH
 
 DOC_LOAD_PATH ?= $(LOAD_PATH) \
-    -L ../../site-lisp \
-    -L ../../site-lisp/ox-texinfo-plus \
-    -L ../../site-lisp/org-mode/contrib/lisp
+    -L $(HOME)/emacs/site-lisp \
+    -L $(HOME)/emacs/site-lisp/ox-texinfo-plus \
+    -L $(HOME)/emacs/site-lisp/org-mode/contrib/lisp
